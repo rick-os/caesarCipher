@@ -1,0 +1,78 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#include "caesar_cipher.h"
+
+static char newChar(char old, int key);
+static int generateKey();
+static int charToInt(char input);
+static char intToChar(int input);
+
+int caesar_encrypt(char textInput[], char textOutput[])
+{
+  int i = 0;
+  int key = generateKey();
+
+  while(textInput[i] != '\0')
+  {
+    if(textInput[i] != ' ')
+    {
+      textOutput[i] = newChar(textInput[i], key);
+    }
+    else
+    {
+      textOutput[i] = textInput[i];
+    }
+    i++;
+  } 
+  
+  if(textOutput[i] != '\0')
+  {
+    textOutput[i] = '\0';
+  }
+
+  return key;
+}
+static int charToInt(char input)
+{
+  int output = 0;
+
+  if(input >= 'a' && input <= 'z')
+  {
+    output = input - 'a';
+  }
+  else if(input >= 'A' && input <= 'Z')
+  {
+    output = input - 'A';
+  }
+  return output;
+}
+static char intToChar(int input)
+{
+  char output = input + 'a';
+
+  return output;
+}
+
+static char newChar(char old, int key)
+{
+  int newInt, oldInt;
+
+  oldInt = charToInt(old);
+  newInt = (oldInt + key) % 26;
+
+  char newChar =  intToChar(newInt);
+
+  return newChar;
+}
+
+static int generateKey()
+{
+
+  srand(time(NULL));
+  int key;
+
+  key = rand() % 26 + 1;
+
+  return key;
+}

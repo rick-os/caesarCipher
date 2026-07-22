@@ -1,13 +1,11 @@
 #include <stdio.h>
 #include <stdio_ext.h>
 #include <stdlib.h>
-#include <time.h>
 #include "caesar_cipher.h"
 
 int selectOption1ToX(int x);
 int getTrueStringSize(char string[]);
 void copyString(char string1[], char string2[]);
-
 
 int main(){
 
@@ -27,16 +25,38 @@ int main(){
     // if I add more options, like without having an text input, I probly need to
     // put a if here verifiyng if the option has text input...
     
+    __fpurge(stdin);
     printf("Insert the text: ");
-    fgets(textInput, sizeof(textInput), stdin);
+    scanf("%s", textInput);
     trueSize = getTrueStringSize(textInput);
 
+    __fpurge(stdin);
     char trueText[trueSize];
     copyString(textInput, trueText); 
+
+    char encryptedText[trueSize];
 
     switch(option)
     {
       case 1:
+        do
+        {
+          __fpurge(stdin);
+          puts(trueText);
+          key = caesar_encrypt(trueText, encryptedText);
+          printf("The encypted text is: ");
+          puts(encryptedText);
+          printf("Your key is: %d\n", key);
+
+          __fpurge(stdin);
+          printf("Do you want to encrypt again?(y/n)");
+          scanf(" %c", &option);
+          if(option == 'y' || option == 'Y')
+          {
+            printf("All right, encrypting again...\n");
+          }
+        }while(option == 'y' || option == 'Y');
+        
         break;
       case 2:
         break;
@@ -81,13 +101,14 @@ int getTrueStringSize(char string[])
   do
   {
     i++;
-  }while(string[i] != '\0' && string[i] != '\n');
+  }while(string[i] != '\0');
 
-  if(string[i] == '\n')
+  if(string[i-1] == '\n')
   {
-    string[i] = '\0';
     i--;
+    string[i] = '\0';
   }
+
   return i;
 }
 void copyString(char string1[], char string2[])
@@ -96,6 +117,8 @@ void copyString(char string1[], char string2[])
   do
   {
     string2[i] = string1[i];
-    i++
-  }while(string[i] != '\0' && string2[i] != '\0');
+    i++;
+  }while(string1[i] != '\0');
+
+  string2[i] = '\0';
 }
