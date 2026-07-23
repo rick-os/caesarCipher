@@ -78,7 +78,6 @@ int main(){
         break;
     }
 
-
     __fpurge(stdin);
     printf("Do you want to reexecute the algorithm?(y/n)");
     scanf(" %c", &confirm);
