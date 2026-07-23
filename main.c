@@ -27,7 +27,7 @@ int main(){
     
     __fpurge(stdin);
     printf("Insert the text: ");
-    scanf("%s", textInput);
+    fgets(textInput, sizeof(textInput), stdin);
     trueSize = getTrueStringSize(textInput);
 
     __fpurge(stdin);
@@ -38,11 +38,11 @@ int main(){
 
     switch(option)
     {
-      case 1:
+      case 1: {
+        char encryptedText[trueSize];
         do
         {
           __fpurge(stdin);
-          puts(trueText);
           key = caesar_encrypt(trueText, encryptedText);
           printf("The encypted text is: ");
           puts(encryptedText);
@@ -58,8 +58,22 @@ int main(){
         }while(option == 'y' || option == 'Y');
         
         break;
-      case 2:
+      }
+
+      case 2: {
+        char decryptedText[trueSize];
+        
+        __fpurge(stdin);
+        printf("Insert your key: ");
+        scanf("%d", &key);
+
+        caesar_decrypt(trueText, decryptedText, key);
+
+        printf("Decripted text: ");
+        puts(decryptedText);
         break;
+      }
+
       default:
         break;
     }
@@ -90,6 +104,7 @@ int selectOption1ToX(int x)
     }
     else
     {
+      valid = true;
       return option;
     }
   }while(valid == false);

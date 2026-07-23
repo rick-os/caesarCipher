@@ -7,6 +7,7 @@ static char newChar(char old, int key);
 static int generateKey();
 static int charToInt(char input);
 static char intToChar(int input);
+static char decryptChar(char encryptedChar, int key);
 
 int caesar_encrypt(char textInput[], char textOutput[])
 {
@@ -15,7 +16,7 @@ int caesar_encrypt(char textInput[], char textOutput[])
 
   while(textInput[i] != '\0')
   {
-    if(textInput[i] != ' ')
+    if((textInput[i] >= 'a' && textInput[i] <= 'z') || (textInput[i] >= 'A' && textInput[i] <= 'Z'))
     {
       textOutput[i] = newChar(textInput[i], key);
     }
@@ -32,6 +33,35 @@ int caesar_encrypt(char textInput[], char textOutput[])
   }
 
   return key;
+}
+void caesar_decrypt(char textInput[], char textOutput[], int key)
+{
+  int i = 0;
+  
+  while(textInput[i] != '\0')
+  {
+    if(textInput[i] >= 'a' && textInput[i] <= 'z')
+    {
+      textOutput[i] = decryptChar(textInput[i], key);
+    }
+    else
+    {
+      textOutput[i] = textInput[i];
+    }
+    i++;
+  }
+  if(textOutput[i] != '\0')
+  {
+    textOutput[i] = '\0';
+  }
+}
+static char decryptChar(char encryptedChar, int key)
+{
+  int encryptedInt = charToInt(encryptedChar);
+  int decryptedInt = (encryptedInt + (26 - key)) % 26;
+  char decryptedChar = intToChar(decryptedInt);
+
+  return decryptedChar;
 }
 static int charToInt(char input)
 {
